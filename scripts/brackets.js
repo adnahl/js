@@ -1,15 +1,10 @@
-// BRACKETS
-// s contain just the characters ( ) [ ] { } determine if input string is valid
-/**
- * @param {string}
- * @return {boolean}
+/* BRACKETS
+ * s contain just the characters ( ) [ ] { } determine if input string is valid
+ *
+ * input {string}
+ * output {boolean}
  */
 
-/**
- * @param a {Array<string>}
- * @param o {string} open bracket
- * @param c {string} close bracket
- */
 const chkBracket = (a, o, c, otherArr) => {
 	if (a.length === 0) return true
 	let openB = 0
@@ -68,10 +63,12 @@ let s2 = '{[]}()' 	// true
 let s3 = '(]' 			// false
 let s4 = '([)]' 		// false
 let s5 = '{[()]}' 	// true
-let s = '[([[)]]]'	// false
+let s6 = '[([[)]]]'	// false
+let s7 = '(({))}'	// false
 console.log('s1', isValid(s1))
 console.log('s2', isValid(s2))
 console.log('s3', isValid(s3))
 console.log('s4', isValid(s4))
 console.log('s5', isValid(s5))
-console.log('s', isValid(s))
+console.log('s6', isValid(s6))
+console.log('s7', isValid(s7))
