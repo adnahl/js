@@ -10,70 +10,68 @@
  * @param o {string} open bracket
  * @param c {string} close bracket
  */
-const chkBracket = (a, o, c) => {
+const chkBracket = (a, o, c, otherArr) => {
 	if (a.length === 0) return true
 	let openB = 0
-	let closeB = 0
-	let other = 0
-	let otherIn = 0
+	let otherOpenBin = 0
+	let otherOpenBout = 0
+
 	for (let i = 0; i < a.length; i++) {
 		if (a[i] === o) openB++
 		else if (a[i] === c) {
-			if (openB <= 0) return false
-			if (otherIn % 2 !== 0) return false
-			closeB++
+			if (openB < 1) return false
+			if (otherOpenBin > 0) return false
 			openB--
 		}
-		else if (openB > 0) otherIn++
-		else other++
+		else if (otherArr[i] === 'o') {
+			if (openB > 0) otherOpenBin++
+			else otherOpenBout++
+		}
+		else {
+			if (openB > 0) otherOpenBin--
+			else otherOpenBout--
+		}
 	}
-	if (openB === 0 && (other % 2 === 0)) return true
+
+	if (openB === 0 && otherOpenBin === 0 && otherOpenBout === 0) return true
 	return false
 }
 
 const isValid = function (s) {
-	let p = []
-	let b = []
-	let k = []
+	let other = []
+
 	for (let i = 0; i < s.length; i++) {
 		switch (s[i]) {
 			case '(':
-			case ')':
-				p.push(s[i])
-				b.push('o')
-				k.push('o')
-				break
-
 			case '[':
-			case ']':
-				b.push(s[i])
-				p.push('o')
-				k.push('o')
+			case '{':
+				other.push('o')
 				break
 
-			case '{':
+			case ']':
+			case ')':
 			case '}':
-				k.push(s[i])
-				b.push('o')
-				p.push('o')
+				other.push('c')
 				break
 
 			default:
 				break
 		}
 	}
-	console.log(chkBracket(p, '(', ')'), chkBracket(b, '[', ']'), chkBracket(k, '{', '}'))
-	return chkBracket(p, '(', ')') && chkBracket(b, '[', ']') && chkBracket(k, '{', '}')
+	// console.log(other)
+	return chkBracket(s, '(', ')', other) && chkBracket(s, '[', ']', other) && chkBracket(s, '{', '}', other)
 }
 
 // test
-let s1 = '()[]{}' // true
-let s2 = '{[]}()' // true
-let s3 = '(]' 		// false
-let s4 = '([)]' 	// false
-let s5 = '{[()]}' // true
+let s1 = '()[]{}' 	// true
+let s2 = '{[]}()' 	// true
+let s3 = '(]' 			// false
+let s4 = '([)]' 		// false
+let s5 = '{[()]}' 	// true
+let s = '[([[)]]]'	// false
 console.log('s1', isValid(s1))
 console.log('s2', isValid(s2))
 console.log('s3', isValid(s3))
 console.log('s4', isValid(s4))
 console.log('s5', isValid(s5))
+console.log('s', isValid(s))
