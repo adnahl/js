@@ -29,8 +29,14 @@ const chkBraces = (s, o, c, a) => {
 		}
 		// a[i] === 'c'
 		else {
-			if (openBrace > 0) otherOpenBraceInside--
-			else otherOpenBraceOutside--
+			if (openBrace > 0) {
+				if (otherOpenBraceInside < 1) return false
+				otherOpenBraceInside--
+			}
+			else {
+				if (otherOpenBraceOutside < 1) return false
+				otherOpenBraceOutside--
+			}
 		}
 	}
 
@@ -68,6 +74,6 @@ function matchingBraces(braces) {
 	return res
 }
 
-let arr = ['()[]{}', '{}', '(({{(({}))}}))', '{([])}', '[[([)]]]', '[{[{}]}]', '([{', '{[]})', '{', '(]']
-// YES, YES, YES, YES, NO, YES, NO, NO, NO, NO
+let arr = ['()[]{}', '({[])}', '(({{(({}))}}))', '{([])}', '[[([)]]]', '[{[{}]}]', '([{', '{[]})', '{', '(]']
+// YES, NO, YES, YES, NO, YES, NO, NO, NO, NO
 console.log(matchingBraces(arr))
