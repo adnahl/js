@@ -1,74 +1,73 @@
-/* BRACKETS
- * s contain just the characters ( ) [ ] { } determine if input string is valid
- *
- * input {string}
- * output {boolean}
+/*
+ * The function is expected to return a STRING_ARRAY.  		- Ex. ['YES', 'NO', 'NO']
+ * The function accepts STRING_ARRAY braces as parameter. - Ex. ['({[]})', '{[})', '({']
  */
 
-const chkBracket = (a, o, c, otherArr) => {
-	if (a.length === 0) return true
-	let openB = 0
-	let otherOpenBin = 0
-	let otherOpenBout = 0
+/**
+ * 
+ * @param {string} s // the string
+ * @param {chart} o  // the open symbol ( [ {
+ * @param {chart} c  // the close symbol ) ] }
+ * @param {array} a  // indicator's array of open or close brace
+ * @returns boolean
+ */
+const chkBraces = (s, o, c, a) => {
+	if (s.length === 0) return false
+	let openBrace = 0
+	let otherOpenBraceOutside = 0
+	let otherOpenBraceInside = 0
 
-	for (let i = 0; i < a.length; i++) {
-		if (a[i] === o) openB++
-		else if (a[i] === c) {
-			if (openB < 1) return false
-			if (otherOpenBin > 0) return false
-			openB--
+	for (let i = 0; i < s.length; i++) {
+		if (s[i] === o) openBrace++
+		else if (s[i] === c) {
+			if (openBrace < 1) return false
+			openBrace--
 		}
-		else if (otherArr[i] === 'o') {
-			if (openB > 0) otherOpenBin++
-			else otherOpenBout++
+		else if (a[i] === 'o') {
+			if (openBrace > 0) otherOpenBraceInside++
+			else otherOpenBraceOutside++
 		}
+		// a[i] === 'c'
 		else {
-			if (openB > 0) otherOpenBin--
-			else otherOpenBout--
+			if (openBrace > 0) otherOpenBraceInside--
+			else otherOpenBraceOutside--
 		}
 	}
 
-	if (openB === 0 && otherOpenBin === 0 && otherOpenBout === 0) return true
+	if (openBrace === 0 && otherOpenBraceOutside === 0 && otherOpenBraceInside === 0) return true
 	return false
 }
 
-const isValid = function (s) {
-	let other = []
-
+const isValid = (s) => {
+	let a = []
 	for (let i = 0; i < s.length; i++) {
 		switch (s[i]) {
 			case '(':
 			case '[':
 			case '{':
-				other.push('o')
+				a.push('o') // open
 				break
 
-			case ']':
 			case ')':
+			case ']':
 			case '}':
-				other.push('c')
+				a.push('c') // close
 				break
 
-			default:
-				break
 		}
 	}
-	// console.log(other)
-	return chkBracket(s, '(', ')', other) && chkBracket(s, '[', ']', other) && chkBracket(s, '{', '}', other)
+	return chkBraces(s, '(', ')', a) && chkBraces(s, '[', ']', a) && chkBraces(s, '{', '}', a)
 }
 
-// test
-let s1 = '()[]{}' 	// true
-let s2 = '{[]}()' 	// true
-let s3 = '(]' 			// false
-let s4 = '([)]' 		// false
-let s5 = '{[()]}' 	// true
-let s6 = '[([[)]]]'	// false
-let s7 = '(({))}'	// false
-console.log('s1', isValid(s1))
-console.log('s2', isValid(s2))
-console.log('s3', isValid(s3))
-console.log('s4', isValid(s4))
-console.log('s5', isValid(s5))
-console.log('s6', isValid(s6))
-console.log('s7', isValid(s7))
+function matchingBraces(braces) {
+	let res = []
+	for (let i = 0; i < braces.length; i++) {
+		if (isValid(braces[i])) res.push('YES')
+		else res.push('NO')
+	}
+	return res
+}
+
+let arr = ['()[]{}', '{}', '(({{(({}))}}))', '{([])}', '[[([)]]]', '[{[{}]}]', '([{', '{[]})', '{', '(]']
+// YES, YES, YES, YES, NO, YES, NO, NO, NO, NO
+console.log(matchingBraces(arr))
