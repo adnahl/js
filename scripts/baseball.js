@@ -7,7 +7,7 @@ const double = (arr) => {
  * @param {string, array}
  * @return {number}
 */
-const Ops = (name, ops) => {
+const Ops = (ops) => {
 	if (!Array.isArray(ops)) return 0
 	let a = []
 	const len = ops.length
@@ -27,7 +27,7 @@ let a1 = ['2', '5', '12', 'C', '20', 'C', 'D']
 let a2 = ['2', 'C', '20', 'C']
 let a3 = ['2', '5', 'D', '+', 'D', 'D']
 let a4 = ['2', '1', '1', '+', '+', '+']
-console.log(Ops('a1', a1))
-console.log(Ops('a2', a2))
-console.log(Ops('a3', a3))
-console.log(Ops('a4', a4))
+console.log(Ops(a1))
+console.log(Ops(a2))
+console.log(Ops(a3))
+console.log(Ops(a4))
