@@ -1,9 +1,40 @@
-// function swap(arr, x, y) {
-// 	let tpm = arr[x]
-// 	arr[y] = arr[x]
-// 	arr[x] = tpm
-// }
+/*
+ * Sort algorithms options
+ */
+function sortAlgorithm(s, A) {
+	let startTime = performance.now()
+	let result = []
+	switch (s) {
+		case 'Bubble':
+			result = bubbleSort([...A])
+			break
 
+		case 'Insert':
+			result = insertSort([...A])
+			break
+
+		case 'Selection':
+			result = selectionSort([...A])
+			break
+
+		case 'Merge':
+			result = mergeSort([...A])
+			break
+
+		case 'Bucket':
+			result = bucketSort([...A])
+			break
+
+		default:
+			break
+	}
+	let endTime = performance.now()
+	console.log({
+		Method: s,
+		Time: ((endTime - startTime).toFixed(2)).toString() + 'ms',
+		Result: result
+	})
+}
 
 // Bubble Sort
 const bubbleSort = (arr) => {
@@ -89,44 +120,27 @@ const merge = (left, right) => {
 	return res
 }
 
+// Bucket Sort
+const bucketSort = (arr) => {
+	let len = arr.length
+	let max = Math.max(...arr)
+	let output = [...arr].fill(0, 0, len)
+	let count = []
+	for (let i = 0; i <= max; i++) count[i] = 0
 
-function sortAlgorithm(s, A) {
-	let startTime = performance.now()
-	let result = []
-	switch (s) {
-		case 'Bubble':
-			result = bubbleSort([...A])
-			break
+	for (let i = 0; i < len; i++) count[arr[i]]++
+	for (let i = 1; i <= max; i++) count[i] += count[i - 1]
+	for (let i = len - 1; i >= 0; i--)  output[--count[arr[i]]] = arr[i]
 
-		case 'Insert':
-			result = insertSort([...A])
-			break
-
-		case 'Selection':
-			result = selectionSort([...A])
-			break
-
-		case 'Merge':
-			result = mergeSort([...A])
-			break
-
-		default:
-			break
-	}
-	let endTime = performance.now()
-	console.log({
-		Method: s,
-		Time: ((endTime - startTime).toFixed(2)).toString() + 'ms',
-		Result: result
-	})
+	return output
 }
 
-/* * * * * * * * * *
- * Creating Array  *
- * * * * * * * * * */
+/* * * * 
+ * Main
+ * * * */
 let A = []
-for (let i = 0; i < 5; i++) {
-	A.push(Math.random() * 10)
+for (let i = 0; i < 50000; i++) {
+	A.push(Math.round(Math.random() * 10000))
 }
 
 console.log({ Array: A })
@@ -134,3 +148,4 @@ sortAlgorithm('Bubble', A)
 sortAlgorithm('Insert', A)
 sortAlgorithm('Selection', A)
 sortAlgorithm('Merge', A)
+sortAlgorithm('Bucket', A)
